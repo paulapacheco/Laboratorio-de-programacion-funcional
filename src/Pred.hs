@@ -10,30 +10,44 @@ type Pred a = a -> Bool
 -- Dado un predicado sobre básicas, cambiar todas las que satisfacen
 -- el predicado por la figura básica indicada por el segundo argumento.
 cambiar :: Pred a -> a -> Dibujo a -> Dibujo a
-cambiar p a b = mapDib (fun_cambia p a) b
+cambiar p a b = mapDib (cambia_aux p a) b
 
-fun_cambia :: Pred a -> a -> a -> a
-fun_cambia p a b | p b = a
-                | otherwise = b
+cambia_aux :: Pred a -> a -> a -> a
+cambia_aux p a b | p b = a
+              | otherwise = b
 
 
 -- Alguna básica satisface el predicado.
 anyDib :: Pred a -> Dibujo a -> Bool
-anyDib f x = foldDib f id id id (\i j x y -> x || y) 
-            (\i j x y -> x || y) (\x y -> x || y) x
+anyDib p d = foldDib p bool1 bool1 bool1 bool_any3 bool_any3 bool_any2 d
+
+bool1 :: Bool -> Bool  
+bool1 b = b
+
+bool_any2 :: Bool -> Bool -> Bool
+bool_any2 b1 b2 = b1 || b2
+
+bool_any3 :: Float -> Float -> Bool -> Bool -> Bool
+bool_any3 _ _ b1 b2 = bool_any2 b1 b2
 
 -- Todas las básicas satisfacen el predicado.
+
 allDib :: Pred a -> Dibujo a -> Bool
-allDib f x = foldDib f id id id (\i j x y -> x && y) 
-            (\i j x y -> x && y) (\x y -> x && y) x
+allDib p d = foldDib p bool1 bool1 bool1 bool_all3 bool_all3 bool_all2 d
+
+bool_all2 :: Bool -> Bool -> Bool
+bool_all2 b1 b2 = b1 && b2
+
+bool_all3 :: Float -> Float -> Bool -> Bool -> Bool
+bool_all3 _ _ b1 b2 = bool_all2 b1 b2
 
 -- Los dos predicados se cumplen para el elemento recibido.
 andP :: Pred a -> Pred a -> Pred a
-andP p1 p2 x = p1 x && p2 x
+andP p1 p2 d = p1 d && p2 d
 
 
 -- Algún predicado se cumple para el elemento recibido.
 orP :: Pred a -> Pred a -> Pred a
-orP p1 p2 x = p1 x || p2 x
+orP p1 p2 d = p1 d || p2 d
 
-falla = True
+falla = True    -- ?? no entiendo esto 
