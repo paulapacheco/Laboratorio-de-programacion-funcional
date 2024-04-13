@@ -13,7 +13,7 @@ data Dibujo a = Figura a
             | Apilar Float Float (Dibujo a) (Dibujo a)
             | Juntar Float Float (Dibujo a) (Dibujo a)
             | Encimar (Dibujo a) (Dibujo a)
-           deriving(Show, Eq) 
+           deriving(Show, Eq)
 
 -- combinadores
 infixr 6 ^^^

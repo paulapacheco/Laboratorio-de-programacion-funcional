@@ -1,6 +1,9 @@
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Eta reduce" #-}
+{-# HLINT ignore "Use camelCase" #-}
 module Pred (
   Pred,
-  cambiar, anyDib, allDib, orP, andP, falla
+  cambiar, anyDib, allDib, orP, andP--, falla
 ) where
 import Dibujo (Dibujo, foldDib, mapDib)
 
@@ -50,4 +53,4 @@ andP p1 p2 d = p1 d && p2 d
 orP :: Pred a -> Pred a -> Pred a
 orP p1 p2 d = p1 d || p2 d
 
-falla = True    -- ?? no entiendo esto 
+--falla = True    -- ?? no entiendo esto 

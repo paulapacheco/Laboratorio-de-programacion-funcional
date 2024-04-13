@@ -3,7 +3,7 @@ module Dibujos.Feo where
 import Dibujo (Dibujo, figura, juntar, apilar, rot45, rotar, encimar, espejar)
 import FloatingPic(Conf(..), Output, half, zero)
 import qualified Graphics.Gloss.Data.Point.Arithmetic as V
-import Graphics.Gloss ( Picture, blue, red, color, line, pictures )
+import Graphics.Gloss ( Picture, blue, red, color, line, pictures)
 
 -- Les ponemos colorcitos para que no sea _tan_ feo
 data Color = Azul | Rojo
