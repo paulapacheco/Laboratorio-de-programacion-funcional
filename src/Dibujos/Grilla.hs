@@ -4,16 +4,16 @@ import FloatingPic(Conf(..), Output, half)
 import qualified Graphics.Gloss.Data.Point.Arithmetic as V
 import Graphics.Gloss(text, line, translate, scale, Vector)
 
-oneThird :: Vector -> Vector
-oneThird = (1/3 V.*)
-
 tupleToString :: Int -> Int -> String
 tupleToString num1 num2 = "(" ++ show num1 ++ ", " ++ show num2 ++ ")"
 
 data Basica = Tupla Int Int
 
 interpBasica :: Output Basica
-interpBasica (Tupla coord1 coord2) x y w = translate (fst (x V.+ (oneThird y))) (snd (x V.+ (oneThird w))) (scale 0.15 0.15 $ text $ tupleToString coord1 coord2)
+interpBasica (Tupla coord1 coord2) x y w = translate 
+                                            (fst $ x V.+ (half $ half y))
+                                            (snd $ x V.+ (half $ half w))
+                                            (scale 0.15 0.15 $ text $ tupleToString coord1 coord2)
 
 row :: [Dibujo a] -> Dibujo a
 row [] = error "row: no puede ser vacío"
