@@ -1,16 +1,17 @@
 module Main (main) where
 
-import Dibujos.Grilla (grillaConf)
 import Dibujos.Feo (feoConf)
+import Dibujos.Escher (escherConf)
+import Dibujos.Grilla (grillaConf)
 import FloatingPic (Conf (..))
 import Interp (initial)
 import System.Environment (getArgs)
 import System.Exit (exitFailure, exitSuccess)
-import Control.Monad (when)
+import Control.Monad (when, )
 
 -- Lista de configuraciones de los dibujos
 configs :: [Conf]
-configs = [feoConf, grillaConf]
+configs = [feoConf, grillaConf, escherConf ]
 
 -- Dibuja el dibujo n
 initial' :: [Conf] -> String -> IO ()
