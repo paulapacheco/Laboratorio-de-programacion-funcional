@@ -12,8 +12,10 @@ module FloatingPic
 where
 
 import Dibujo (Dibujo)
-import Graphics.Gloss (Picture, Vector, blank, line, pictures, rotate, translate)
+import Graphics.Gloss (Picture, Vector, blank, line, pictures, rotate, translate, scale)
 import qualified Graphics.Gloss.Data.Point.Arithmetic as V
+import Graphics.Gloss.Geometry.Angle
+import Graphics.Gloss.Data.Vector
 
 type FloatingPic = Vector -> Vector -> Vector -> Picture
 
@@ -33,6 +35,7 @@ zero = (0, 0)
 -- Escala el argumento por 0.5
 half :: Vector -> Vector
 half = (0.5 V.*)
+
 
 -- Infinitas lineas paralelas horizontales
 -- Desde (x, y) para arriba con un largo de mag
