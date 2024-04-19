@@ -58,7 +58,7 @@ escher n p = noneto (esquina n (figura p))
                 (rotar (rotar (esquina n (figura p))))
 
 test :: Dibujo Escher
-test = escher 3 True
+test = escher 2 True
 
 escherConf :: Conf
 escherConf = Conf {
