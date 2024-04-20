@@ -63,8 +63,8 @@ modif m f d w h = f (d) (m V.* w) (m V.* h)
 
 rotalp :: Float -> FloatingPic -> FloatingPic
 rotalp m f d w h 
-      | m <= 45 = f (d V.+ m/90 V.* w V.+ m/90 V.* h) (m/90 V.* h V.+ (90-m)/90 V.* w) ((90-m)/90 V.* h V.- 2 * m/90 V.* w )
-      | otherwise = f (d V.+ (90-m)/90 V.* h V.+ m/90 V.* w) (m/90 V.* h' V.+ (90-m)/90 V.* w') (1 * m/90 V.* V.negate w' V.+ (90-m)/90 V.* h')
+      | m <= 45 = f (d V.+ m/90 V.* w V.+ m/90 V.* h) (m/90 V.* h V.+ (90-m)/90 V.* w) ((90-m)/90 V.* h V.- m/90 V.* w )
+      | otherwise = f (d V.+ (90-m)/90 V.* h V.+ m/90 V.* w) (m/90 V.* h' V.+ (90-m)/90 V.* w') (m/90 V.* V.negate w' V.+ (90-m)/90 V.* h')
       where w' = (VV.magV h, 0)
             h' = (0, VV.magV w)
 
