@@ -5,7 +5,7 @@ module Pred (
   Pred,
   cambiar, anyDib, allDib, orP, andP--, falla
 ) where
-import Dibujo (Dibujo, foldDib, mapDib)
+import Dibujo (Dibujo (Rot45), foldDib, mapDib)
 
 type Pred a = a -> Bool
 
@@ -22,7 +22,7 @@ cambia_aux p a b | p b = a
 
 -- Alguna básica satisface el predicado.
 anyDib :: Pred a -> Dibujo a -> Bool
-anyDib p d = foldDib p bool1 bool1 bool1 bool_any3 bool_any3 bool_any2 d
+anyDib p d = foldDib p bool1 bool1 bool1 bool_any3 bool_any3 bool_any2 bool4 bool4 d
 
 bool1 :: Bool -> Bool  
 bool1 b = b
@@ -33,10 +33,13 @@ bool_any2 b1 b2 = b1 || b2
 bool_any3 :: Float -> Float -> Bool -> Bool -> Bool
 bool_any3 _ _ b1 b2 = bool_any2 b1 b2
 
+bool4 :: Float -> Bool -> Bool
+bool4 _ b = b
+
 -- Todas las básicas satisfacen el predicado.
 
 allDib :: Pred a -> Dibujo a -> Bool
-allDib p d = foldDib p bool1 bool1 bool1 bool_all3 bool_all3 bool_all2 d
+allDib p d = foldDib p bool1 bool1 bool1 bool_all3 bool_all3 bool_all2 bool4 bool4 d
 
 bool_all2 :: Bool -> Bool -> Bool
 bool_all2 b1 b2 = b1 && b2
