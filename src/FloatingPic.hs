@@ -12,9 +12,9 @@ module FloatingPic
 where
 
 import Dibujo (Dibujo)
-import Graphics.Gloss (Picture, Vector, blank, line, pictures, rotate, translate, scale)
+import Graphics.Gloss (Picture, blank, line, pictures, rotate, translate)
 import qualified Graphics.Gloss.Data.Point.Arithmetic as V
-import Graphics.Gloss.Geometry.Angle
+import Graphics.Gloss.Geometry.Angle()
 import Graphics.Gloss.Data.Vector
 
 type FloatingPic = Vector -> Vector -> Vector -> Picture

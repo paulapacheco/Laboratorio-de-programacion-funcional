@@ -60,10 +60,10 @@ executable dibujos
                       InterpHaha,
                       InterpSVG,
                       Pred,
-                      Dibujos.Ejemplo,
+                      Dibujos.Escher,
                       Dibujos.Feo,
                       Dibujos.Grilla,
-                      Dibujos.Cuadrados
+                      Dibujos.Caracoles
     exposed-modules:  Dibujo, Pred, Interp
     build-depends:    base ^>=4.17.2.1,
                       gloss ^>=1.13.2.2,

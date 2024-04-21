@@ -1,9 +1,9 @@
 module Dibujos.Caracoles where
 
-import Dibujo (Dibujo, figura, juntar, apilar, rot45, rotar, encimar, espejar, modDim, rotAlpha) 
-import FloatingPic(Conf(..), Output, half, zero)
+import Dibujo (Dibujo, figura, juntar, apilar, encimar, modDim, rotAlpha)
+import FloatingPic(Conf(..), Output)
 import qualified Graphics.Gloss.Data.Point.Arithmetic as V
-import Graphics.Gloss ( Picture, Picture(Text), blank, translate, scale, blue, red, color, line, pictures )
+import Graphics.Gloss ( Picture, blank, blue, red, color, line)
 
 
 data Color = Azul | Rojo
@@ -25,12 +25,12 @@ colorear Rojo = color red
 --  x --- x + w
 
 interpBasicaSinColor :: Output BasicaSinColor
-interpBasicaSinColor Rectangulo x y w = line [x, x V.+ y, x V.+ y V.+ w, x V.+ w, x]
+interpBasicaSinColor Rectangulo x y w = line [x, x V.+ y, x V.+ y V.+ w, 
+                                                x V.+ w, x]
 interpBasicaSinColor Blanca _ _ _ = blank
 
 interpBas :: Output Basica
 interpBas (b, c) x y w = colorear c $ interpBasicaSinColor b x y w
-
 
 -- Funciones para colorear
 
@@ -40,16 +40,12 @@ figRoja b = figura (b, Rojo)
 figAzul :: BasicaSinColor -> Dibujo Basica
 figAzul b = figura (b, Azul)
 
-
-
 -- Funcion recursiva para rotaciones
 
 funRec :: Float -> Dibujo Basica -> Dibujo Basica
 funRec n d 
      | n < 2 = d
      | otherwise = encimar d (funRec (n-2) (rotAlpha n d))
-
-
 
 row :: [Dibujo a] -> Dibujo a
 row [] = error "row: no puede ser vacío"
@@ -64,7 +60,6 @@ column (d:ds) = apilar 1 (fromIntegral $ length ds) d (column ds)
 grilla :: [[Dibujo a]] -> Dibujo a
 grilla = column . map row
 
-
 rectR :: Dibujo Basica
 rectR = figura (Rectangulo, Rojo)
 
@@ -74,14 +69,13 @@ rectA = figura (Rectangulo, Azul)
 figVacia :: Dibujo Basica
 figVacia = figura (Blanca, Azul)
 
-
 test :: Dibujo Basica
 test = grilla[
-    [modDim 0.3 (encimar (rotAlpha 45 (funRec 40 rectR)) (rotAlpha 38 (funRec 40 rectA))), figVacia],
-    [figVacia, encimar (rotAlpha 45 (funRec 40 rectR)) (rotAlpha 38 (funRec 40 rectA))]
+    [modDim 0.3 (encimar (rotAlpha 45 (funRec 40 rectR)) 
+                        (rotAlpha 38 (funRec 40 rectA))), figVacia],
+    [figVacia, encimar (rotAlpha 45 (funRec 40 rectR))
+                        (rotAlpha 38 (funRec 40 rectA))]
     ]
-
-
 
 caracolesConf :: Conf
 caracolesConf = Conf { 
@@ -89,5 +83,3 @@ caracolesConf = Conf {
     , pic = test
     , bas = interpBas
 }
-
-

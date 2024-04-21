@@ -1,12 +1,10 @@
 module Dibujo (figura, encimar, apilar,
           juntar, rot45, rotar, espejar,
           modDim, rotAlpha, foldDib, mapDib,
-          cuarteto, Dibujo(..)
+          cuarteto, encimar4, r270, Dibujo(..)
         ) where
 
 --nuestro lenguaje 
--- data Dibujo a = Dibujo deriving (Eq, Show) DEF TIENE Q SER ASI
-
 data Dibujo a = Figura a 
             | Rotar (Dibujo a)
             | Espejar (Dibujo a)
@@ -26,9 +24,8 @@ infixr 7 .-.
 infixr 8 ///
 
 comp :: Int -> (a -> a) -> a -> a
-comp 0 f d = d
+comp 0 _ d = d
 comp n f d = comp (n-1) f (f(d))
-
 
 -- Funciones constructoras
 figura :: a -> Dibujo a
@@ -84,7 +81,6 @@ r270 d = comp 3 r90 d
 
 -- una figura repetida con las cuatro rotaciones, superimpuestas.
 encimar4 :: Dibujo a -> Dibujo a
--- encimar4 d = (^^^) d (((^^^)(r90 d) ((^^^)(r180 d) (r270 d))))
 encimar4 d = (^^^)((^^^) d (r90 d)) ((^^^)(r180 d) (r270 d))
 
 -- cuatro figuras en un cuadrante.
@@ -93,11 +89,9 @@ cuarteto d1 d2 d3 d4 = (.-.) ((///) d1 d2) ((///) d3 d4)
 
 -- un cuarteto donde se repite la imagen, rotada (¡No confundir con encimar4!)
 ciclar :: Dibujo a -> Dibujo a
-ciclar d = (.-.) ((///) d (r90 d)) ((///) (r180 d) (r270 d)) 
--- ciclar d = cuarteto d (r90 d) (r180 d) (r270 d)
+ciclar d = (.-.) ((///) d (r90 d)) ((///) (r180 d) (r270 d))
 
 -- map para nuestro lenguaje
-
 mapDib :: (a -> b) -> Dibujo a -> Dibujo b
 mapDib f (Figura d) = Figura (f d)
 mapDib f (Rotar d) = Rotar (mapDib f d)
@@ -108,10 +102,6 @@ mapDib f (Juntar m n d1 d2) = Juntar m n (mapDib f d1) (mapDib f d2)
 mapDib f (Encimar d1 d2) = Encimar (mapDib f d1)(mapDib f d2)
 mapDib f (ModDim m d) = ModDim m (mapDib f d)
 mapDib f (RotarAlpha m d) = RotarAlpha m (mapDib f d)
--- verificar que las operaciones satisfagan
--- 1. map figura = id
--- 2. map (g . f) = mapDib g . mapDib f
-
 
 -- Cambiar todas las básicas de acuerdo a la función.
 change :: (a -> Dibujo b) -> Dibujo a -> Dibujo b
@@ -130,7 +120,6 @@ change f (RotarAlpha m d) = RotarAlpha m (change f d)
 -- pensar en foldr y las definiciones de intro a la lógica
 -- foldDib aplicado a cada constructor de Dibujo debería devolver el mismo
 -- dibujo
-
 foldDib ::
   (a -> b) -> (b -> b) -> (b -> b) -> (b -> b) ->
   (Float -> Float -> b -> b -> b) ->
@@ -139,12 +128,36 @@ foldDib ::
   (Float -> b -> b) ->
   (Float -> b -> b) ->
   Dibujo a -> b
-foldDib fb ro90 es r45 ap j en md ra (Figura d) = fb d -- ????
-foldDib fb ro90 es r45 ap j en md ra (Rotar d) = ro90 (foldDib fb ro90 es r45 ap j en md ra d)
-foldDib fb ro90 es r45 ap j en md ra (Espejar d) = es (foldDib fb ro90 es r45 ap j en md ra d)
-foldDib fb ro90 es r45 ap j en md ra (Rot45 d) = r45 (foldDib fb ro90 es r45 ap j en md ra d)
-foldDib fb ro90 es r45 ap j en md ra (Apilar m n d1 d2) = ap m n (foldDib fb ro90 es r45 ap j en md ra d1)(foldDib fb ro90 es r45 ap j en md ra d2)
-foldDib fb ro90 es r45 ap j en md ra (Juntar m n d1 d2) = j m n (foldDib fb ro90 es r45 ap j en md ra d1)(foldDib fb ro90 es r45 ap j en md ra d2)
-foldDib fb ro90 es r45 ap j en md ra (Encimar d1 d2) = en (foldDib fb ro90 es r45 ap j en md ra d1)(foldDib fb ro90 es r45 ap j en md ra d2)
-foldDib fb ro90 es r45 ap j en md ra (ModDim m d) = md m (foldDib fb ro90 es r45 ap j en md ra d)
-foldDib fb ro90 es r45 ap j en md ra (RotarAlpha m d) = ra m (foldDib fb ro90 es r45 ap j en md ra d)
+foldDib fb _ _ _ _ _ _ _ _ (Figura d) = fb d
+foldDib fb ro90 es r45 ap j en md ra (Rotar d) = ro90 (foldDib fb ro90 es r45
+                                                        ap j en md ra d)
+foldDib fb ro90 es r45 ap j en md ra (Espejar d) = es (foldDib fb ro90 es r45
+                                                        ap j en md ra d)
+foldDib fb ro90 es r45 ap j en md ra (Rot45 d) = r45 (foldDib fb ro90 es r45
+                                                        ap j en md ra d)
+foldDib fb ro90 es r45 ap j en md ra (Apilar m n d1 d2) = ap m n
+                                      (foldDib fb ro90 es r45 ap j en md ra d1)
+                                      (foldDib fb ro90 es r45 ap j en md ra d2)
+foldDib fb ro90 es r45 ap j en md ra (Juntar m n d1 d2) = j m n 
+                                      (foldDib fb ro90 es r45 ap j en md ra d1)
+                                      (foldDib fb ro90 es r45 ap j en md ra d2)
+foldDib fb ro90 es r45 ap j en md ra (Encimar d1 d2) = en 
+                                      (foldDib fb ro90 es r45 ap j en md ra d1)
+                                      (foldDib fb ro90 es r45 ap j en md ra d2)
+foldDib fb ro90 es r45 ap j en md ra (ModDim m d) = md m (foldDib fb ro90 es
+                                                          r45 ap j en md ra d)
+foldDib fb ro90 es r45 ap j en md ra (RotarAlpha m d) = ra m (foldDib fb ro90
+                                                        es r45 ap j en md ra d)
+
+{-
+donde:
+fb: figura básica
+ro90: rotar
+es: espejar
+r45: rot45
+ap: apilar
+j:juntar
+en: encimar
+md: modDim
+ra: rotAlpha
+-}

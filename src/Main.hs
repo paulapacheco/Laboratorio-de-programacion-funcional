@@ -4,7 +4,6 @@ import Dibujos.Feo (feoConf)
 import Dibujos.Escher (escherConf)
 import Dibujos.Grilla (grillaConf)
 import Dibujos.Caracoles (caracolesConf)
-import Dibujos.Triangulos (triangulosConf)
 import FloatingPic (Conf (..))
 import Interp (initial)
 import System.Environment (getArgs)
@@ -13,7 +12,7 @@ import Control.Monad (when, )
 
 -- Lista de configuraciones de los dibujos
 configs :: [Conf]
-configs = [feoConf, grillaConf, escherConf, caracolesConf, triangulosConf]
+configs = [feoConf, grillaConf, escherConf, caracolesConf]
 
 -- Dibuja el dibujo n
 initial' :: [Conf] -> String -> IO ()
@@ -35,5 +34,6 @@ main = do
   when (head args == "-l") $ do
     putStrLn "Los dibujos disponibles son:"
     mapM_ (putStrLn . name) configs
+    putStrLn "Ingrese el nombre del dibujo que desea ver:"
     exitSuccess
   initial' configs $ head args

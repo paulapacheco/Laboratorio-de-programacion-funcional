@@ -1,6 +1,7 @@
 module Dibujos.Escher where
 
-import Dibujo (Dibujo, figura, juntar, apilar, rot45, rotar, encimar, cuarteto)
+import Dibujo (Dibujo, figura, juntar, apilar, rot45, rotar, r270, encimar,
+                cuarteto, encimar4)
 import FloatingPic(FloatingPic, Conf(..), Output, zero)
 import qualified Graphics.Gloss.Data.Point.Arithmetic as V
 import Graphics.Gloss ( Picture, blank, line)
@@ -18,23 +19,22 @@ interpBas :: Output Escher
 interpBas True = trian
 interpBas False = simple blank
 
-
 -- El dibujo u.
-
 dibujoU :: Dibujo Escher -> Dibujo Escher
-dibujoU p = encimar (encimar p1 (rotar p1)) (encimar (rotar (rotar p1)) (rotar (rotar (rotar p1))) )
+dibujoU p = encimar4 p1
         where p1 = rot45 p
 
 -- El dibujo t.
 dibujoT :: Dibujo Escher -> Dibujo Escher
 dibujoT p = encimar p (encimar p1 p2)  
     where p1 = (rot45 p)
-          p2 = rotar (rotar (rotar p1))
+          p2 = r270 p1
 
 -- Esquina con nivel de detalle en base a la figura p.
 esquina :: Int -> Dibujo Escher -> Dibujo Escher
 esquina 0 _ = figura(False)
-esquina n p = cuarteto (esquina (n-1) p) (lado (n-1) p) (rotar (lado (n-1) p)) (dibujoU p)
+esquina n p = cuarteto
+            (esquina (n-1) p) (lado (n-1) p) (rotar (lado (n-1) p)) (dibujoU p)
 
 -- Lado con nivel de detalle.
 lado :: Int -> Dibujo Escher -> Dibujo Escher
@@ -43,7 +43,9 @@ lado n p = cuarteto(lado (n-1) p)(lado (n-1) p) (rotar (dibujoT p)) (dibujoT p)
 
 
 -- Por suerte no tenemos que poner el tipo!
-noneto p q r s t u v w x =  apilar 1 2 (juntar 1 2 p (juntar 1 1 q r)) (apilar 1 1 (juntar 1 2 s (juntar 1 1 t u)) (juntar 1 2 v (juntar 1 1 w x)))
+noneto p q r s t u v w x =  apilar 1 2 (juntar 1 2 p (juntar 1 1 q r))
+                            (apilar 1 1 (juntar 1 2 s (juntar 1 1 t u))
+                                        (juntar 1 2 v (juntar 1 1 w x)))
 
 -- El dibujo de Escher:
 escher :: Int -> Escher -> Dibujo Escher
