@@ -40,9 +40,13 @@ Al responder tranformar cada pregunta en una subsección para que sea más fáci
 Las funcionalidades están separadas en módulos para dividir nuestro problema en otros más pequeños según las tareas de cada parte del código, y así lograr un código más fácil de entender y reutilizable en otros problemas. Facilita la comprensión del trabajo de cada módulo, y se pueden testear sus funcionalidades. 
  Los módulos son:
 - Dibujo.hs: define la sintaxis de nuestro lenguaje de figuras, las palabras y nuestro lenguaje, sus funciones constructoras  y algunos combinadores. 
+
 - Pred.hs: define predicados sobre figuras básicas.
+
 - FloatingPic.hs: declara funciones auxiliares para la interpretación geométrica de las figuras, y brinda la interfaz para ello.
+
 - Interp.hs: declara la semántica de nuestro lenguaje, es decir, brinda una interpretación geométrica de las operaciones del lenguaje utilizando módulos de la librería Gloss.
+
 - Main.hs: integra los módulos anteriores y combina las distintas funcionalidades para efectivamente resolver lo que queremos.
 
 
@@ -64,7 +68,9 @@ La diferencia principal se encuentra en el contexto en el que se definen y cómo
 
 # 4. Extras
 Agregamos las funciones:
+
 - modDim que modifica las dimensiones de un dibujo;
+
 - rotarAlpha que rota alpha grados una figura.
 
 Creamos la imagen Caracoles (src/Dibujos/Caracoles.hs) en el que se utilizan las dos funciones antes mencionadas.
