@@ -75,16 +75,3 @@ rotalp m f d w h
 
 interp :: Output a -> Output (Dibujo a)
 interp f d = foldDib f rot esp r45 api jun sup modif rotalp d
-
-{-
-interp :: Output a -> Output (Dibujo a)
-interp f (Figura d) = f d
-interp f (Rotar d) = rot (interp f d)
-interp f (Rot45 d) = r45 (interp f d)
-interp f (Espejar d) = esp (interp f d)
-interp f (Encimar d1 d2) = sup (interp f d1) (interp f d2)
-interp f (Juntar m n d1 d2) = jun m n (interp f d1) (interp f d2)
-interp f (Apilar m n d1 d2) = api m n (interp f d1) (interp f d2)
-interp f (ModDim m d) = modif m (interp f d)
-interp f (RotarAlpha m d) = rotalp m (interp f d)
--}
