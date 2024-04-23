@@ -52,11 +52,16 @@ testShowDibujo :: Test
 testShowDibujo = "Mostrar Dibujo" ~: do
     let dibujo1 = figura (Circle 50)
         dibujo2 = rotar (figura (Line [(0,0),(100,100)]))
-        dibujo3 = apilar 50 50 (figura (rectangleSolid 100 50)) (figura (Circle 50))
+        dibujo3 = apilar 50 50 (figura (rectangleSolid 100 50)) 
+                                       (figura (Circle 50))
     assertEqual "Mostrar dibujo 1" (show dibujo1) "Figura (Circle 50.0)"
-    assertEqual "Mostrar dibujo 2" (show dibujo2) "Rotar (Figura (Line [(0.0,0.0),(100.0,100.0)]))"
-    assertEqual "Mostrar dibujo 3" (show dibujo3) "Apilar 50.0 50.0 (Figura (Polygon [(-50.0,-25.0),(-50.0,25.0),(50.0,25.0),(50.0,-25.0)])) (Figura (Circle 50.0))"
+    assertEqual "Mostrar dibujo 2" (show dibujo2) 
+                "Rotar (Figura (Line [(0.0,0.0),(100.0,100.0)]))"
+    assertEqual "Mostrar dibujo 3" (show dibujo3) 
+                "Apilar 50.0 50.0 (Figura (Polygon [(-50.0,-25.0),(-50.0,25.0),(50.0,25.0),(50.0,-25.0)])) (Figura (Circle 50.0))"
 
 -- Ejecutar todas las pruebas
 main :: IO Counts
-main = runTestTT $ TestList [testFigura, testEncimar, testApilar, testJuntar, testRot45, testRotar, testEspejar, testShowDibujo, testModDim, testRotAlpha]
+main = runTestTT $ TestList [testFigura, testEncimar, testApilar, testJuntar, 
+                            testRot45, testRotar, testEspejar, testShowDibujo, 
+                            testModDim, testRotAlpha]

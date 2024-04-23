@@ -15,34 +15,41 @@ testCambiar = TestList
     ]
 
 -- Predicado para verificar si el área de una figura es mayor que 500
-areaMayorQue500 :: Pred (Dibujo Picture) -- Funcion de tipo "Dibujo Picture -> Bool"
-areaMayorQue500 (Figura (Circle r)) = pi * r * r > 500
-areaMayorQue500 (Apilar _ _ d1 d2) = areaMayorQue500 d1 && areaMayorQue500 d2 -- al usarse con AllDib, tenemos que usar el operador &&
-areaMayorQue500 (Juntar _ _ d1 d2) = areaMayorQue500 d1 && areaMayorQue500 d2
-areaMayorQue500 _ = False
+areaMayor500 :: Pred (Dibujo Picture) -- Funcion de tipo "Dibujo Picture -> Bool"
+areaMayor500 (Figura (Circle r)) = pi * r * r > 500
+areaMayor500 (Apilar _ _ d1 d2) = areaMayor500 d1 && areaMayor500 d2 -- al usarse con AllDib, tenemos que usar el operador &&
+areaMayor500 (Juntar _ _ d1 d2) = areaMayor500 d1 && areaMayor500 d2
+areaMayor500 _ = False
 
 -- Predicado para verificar si el área de una figura es mayor que 1000
-areaMayorQue1000 :: Pred (Dibujo Picture) -- Funcion de tipo "Dibujo Picture -> Bool"
-areaMayorQue1000 (Figura (Circle r)) = pi * r * r > 1000
-areaMayorQue1000 (Apilar _ _ d1 d2) = areaMayorQue1000 d1 || areaMayorQue1000  d2 -- al usarse con AnyDib, tenemos que usar el operador ||
-areaMayorQue1000 (Juntar _ _ d1 d2) = areaMayorQue1000 d1 || areaMayorQue1000  d2
-areaMayorQue1000 _ = False
+areaMayor1000 :: Pred (Dibujo Picture) -- Funcion de tipo "Dibujo Picture -> Bool"
+areaMayor1000 (Figura (Circle r)) = pi * r * r > 1000
+areaMayor1000 (Apilar _ _ d1 d2) = areaMayor1000 d1 || areaMayor1000  d2 -- al usarse con AnyDib, tenemos que usar el operador ||
+areaMayor1000 (Juntar _ _ d1 d2) = areaMayor1000 d1 || areaMayor1000  d2
+areaMayor1000 _ = False
 
 -- Prueba para verificar la función anyDib con figuras compuestas
 testAnyDib :: Test
 testAnyDib = "anyDib" ~: do
-    let dibujo1 = figura $ apilar 10 10 (figura (Circle 30)) (figura (Circle 5))
-        dibujo2 = figura $ juntar 20 20 (figura (Circle 2)) (figura (Circle 10))
-    assertBool "Algunas figuras tienen área mayor que 1000" (anyDib areaMayorQue1000 dibujo1)
-    assertBool "Ninguna figura tiene área mayor que 1000" (not $ anyDib areaMayorQue1000 dibujo2)
+    let dibujo1 = figura $ apilar 10 10 (figura (Circle 30)) 
+                                        (figura (Circle 5))
+        dibujo2 = figura $ juntar 20 20 (figura (Circle 2)) 
+                                        (figura (Circle 10))
+    assertBool "Algunas figuras tienen área mayor que 1000" 
+                (anyDib areaMayor1000 dibujo1)
+    assertBool "Ninguna figura tiene área mayor que 1000" 
+                (not $ anyDib areaMayor1000 dibujo2)
 
 -- Prueba para verificar la función allDib con figuras compuestas
 testAllDib :: Test
 testAllDib = "allDib" ~: do
     let dibujo1 = figura $ apilar 5 5 (figura (Circle 30)) (figura (Circle 5))
-        dibujo2 = figura $ juntar 10 10 (figura (Circle 15)) (figura (Circle 25))
-    assertBool "Algunas figuras no tienen área mayor que 500" (not $ allDib areaMayorQue500 dibujo1)
-    assertBool "Todas las figuras tienen área mayor que 500" (allDib areaMayorQue500 dibujo2)
+        dibujo2 = figura $ juntar 10 10 (figura (Circle 15)) 
+                                        (figura (Circle 25))
+    assertBool "Algunas figuras no tienen área mayor que 500" 
+                (not $ allDib areaMayor500 dibujo1)
+    assertBool "Todas las figuras tienen área mayor que 500" 
+                (allDib areaMayor500 dibujo2)
 
 -- Prueba para la función 'andP'
 testAndP :: Test
@@ -56,4 +63,5 @@ testOrP = "Algún predicado se cumple para el elemento recibido" ~:
 
 -- Ejecutar todas las pruebas
 main :: IO Counts
-main = runTestTT $ TestList [testCambiar, testAnyDib, testAllDib, testAndP, testOrP]
+main = runTestTT $ TestList [testCambiar, testAnyDib, testAllDib, testAndP, 
+                            testOrP]

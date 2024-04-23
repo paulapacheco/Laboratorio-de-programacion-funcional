@@ -10,8 +10,8 @@ tupleToString num1 num2 = "(" ++ show num1 ++ ", " ++ show num2 ++ ")"
 data Basica = Tupla Int Int
 
 interpBasica :: Output Basica
-interpBasica (Tupla coord1 coord2) x y w = translate 
-                    (fst $ x V.+ (half $ half y)) (snd $ x V.+ (half $ half w))
+interpBasica (Tupla coord1 coord2) x y w = translate
+                    (fst $ x V.+ half (half y)) (snd $ x V.+ half (half w))
                     (scale 0.15 0.15 $ text $ tupleToString coord1 coord2)
 
 row :: [Dibujo a] -> Dibujo a
